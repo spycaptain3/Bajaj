@@ -26,7 +26,7 @@ app.post("/bfhl", (req, res) => {
     roll_number:"RA2011030030029",
     numbers: "[“1”,”334”,”4”]",
     alphabets,
-    highest_alphabet: highest_alphabet ? [highest_alphabet] : [],
+    highest_alphabet: highest_alphabet ? [highest_alphabet] : []
   });
 });
 
