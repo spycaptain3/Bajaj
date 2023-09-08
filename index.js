@@ -1,44 +1,43 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-
+const express = require('express');
 const app = express();
-app.use(bodyParser.json());
+const log = console.log;
 
-app.post("/bfhl", (req, res) => {
-  const data = req.body.data || [];
-  const numbers = [];
-  const alphabets = [];
+app.use(express.json());
+// app.use(express.urlencoded());
 
-  data.forEach((item) => {
-    if (!isNaN(item)) {
-      numbers.push(item);
-    } else {
-      alphabets.push(item.toUpperCase());
-    }
-  });
+app.get('/bfhl', (req, res) => {
+    const data = {operation_code:1};
+    res.status(200).json(data);
+})
 
-  const highest_alphabet = alphabets.sort().pop() || null;
+app.post('/bfhl', (req, res) => {
 
-  res.json({
-    is_success: true,
-    user_id:"deepak_gupta_11092002",
-    email:“dg6723@srmist.edu.in”, 
-    roll_number:"RA2011030030029",
-    numbers: "[“1”,”334”,”4”]",
-    alphabets,
-    highest_alphabet: highest_alphabet ? [highest_alphabet] : []
-  });
-});
+    const data = req.body.data;
+    const nums = [];
+    const alphas = [];
+    
+    data.forEach((element) => {
+        if (!isNaN(element)) nums.push(element);
+        else alphas.push(element);
+    });
+    
+    const bigAlpha = alphas;
+    bigAlpha.sort().reverse();
+
+    const response = {
+        "is_success": true,
+        "user_id": "deepak_gupta_11092002", 
+        "email" : "dg6723@srmist.edu.in",
+        "roll_number": "RA2011030030029",
+        "numbers": nums,
+        "alphabets": alphas,
+        "highest_alphabet": bigAlpha.length > 0 ? [bigAlpha[0]] : []
+    };
+
+    res.send(response);
+})
 
 
-app.get("/bfhl", (req, res) => {
-  res.status(200).json({
-    operation_code: 1,
-  });
-});
-
-app.listen(3000, confirmation(3000));
-
-function confirmation(port) {
-  console.log(`server is running on ${port} `);
-}
+app.listen("3002", ()=>{
+    log('server running on port: 3002');
+})
